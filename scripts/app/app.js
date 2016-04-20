@@ -27,10 +27,10 @@ define(['canvas','brick','player'],function(canvas,brick,player) {
             var down = Math.abs(dotY-y-height);
             var left = Math.abs(dotX-x);
             var right = Math.abs(dotX-x-width);
-            if(left<up&&left<down){
+            if(left<up&&left<down&&left<right){
                 return 1;
             }
-            if(right<up&&right<down){
+            if(right<up&&right<down&&right<left){
                 return 1;
             }
             return 2;
@@ -41,16 +41,48 @@ define(['canvas','brick','player'],function(canvas,brick,player) {
     
     var formerX;
     var formerY;
+    var cx;
+    var cy;
     function playerGo(x,y){
+        player.inMoving = false;
+        
+        if(arguments.length == 2){
+            cx = x;
+            cy = y;
+        }
+        formerX = player.x;
+        formerY = player.y;
+        console.log(player.x);
+        console.log(player.y);
         for(var i in brickArr){
-            switch(dotInRect(player.x,player.y,brickArr[i].x,brickArr[i].y,brickArr[i].width,brickArr[i].height)){
+            switch(dotInRect(player.x,player.y,brickArr[i].x-10,brickArr[i].y-10,brickArr[i].width+20,brickArr[i].height+20)){
             case 1:
-                
+            console.log(1);
+                if(Math.abs(brickArr[i].y-player.y)<brickArr[i].height/2){
+                    player.startPath(player.x,player.y-10);
+                }else{
+                    player.startPath(player.x,player.y+10);
+                }
+                requestAnimationFrame(playerGo);
+                return;
                 break;
             case 2:
+            console.log(2);
+                if(Math.abs(brickArr[i].x-player.x)<brickArr[i].width/2){
+                    player.startPath(player.x-10,player.y);
+                }else{
+                    player.startPath(player.x+10,player.y);
+                }
+                
+                requestAnimationFrame(playerGo);
+                return;
                 break;
             default:
+                player.startPath(parseInt(cx),parseInt(cy));
             }
+        }
+        if(Math.abs(player.x-cx+player.y-cy)>10){
+            requestAnimationFrame(playerGo);
         }
     }
     
@@ -58,7 +90,9 @@ define(['canvas','brick','player'],function(canvas,brick,player) {
      * handle input
      */
     function goPath(x,y){
-        playerGo(x,y);
+        cx= x;
+        cy=y;
+        playerGo();
     }
     
     

@@ -15,7 +15,7 @@ define(['canvas'],function(canvas){
     }
     Player.prototype.draw=function (){
         if(this.inMoving){
-            this.move(this.destionX-this.x,this.destionY-this.y);
+            this.moveby(this.destionX-this.x,this.destionY-this.y);
             if(Math.abs(this.x-this.destionX)+Math.abs(this.y-this.destionY)<step){
                 this.inMoving =false;
             }
@@ -26,21 +26,21 @@ define(['canvas'],function(canvas){
         ctx.closePath();
         ctx.fill();
     }
-    Player.prototype.move = function(x,y){
+    Player.prototype.moveby = function(x,y){
         var length = Math.sqrt(x*x+y*y);
         length/=step;
         x = x/length;
         y = y/length;
-        this.x += x;
-        this.y += y;
+        this.x += isNaN(parseInt(x))?0:parseInt(x);
+        this.y += isNaN(parseInt(y))?0:parseInt(y);
     }
     Player.prototype.startPath = function(x,y){
-        if(this.inMoving){
-            return;
-        }
         this.destionX = x;
         this.destionY = y;
         this.inMoving = true;
+    }
+    Player.prototype.clearMove = function(){
+        this.inMoving = false;
     }
     return Player;
 })
