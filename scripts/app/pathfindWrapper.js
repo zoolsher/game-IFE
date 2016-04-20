@@ -1,6 +1,6 @@
 define(['pathfinding-browser','canvas'],function(PF,canvas){
     var map = [];
-    var GRIDSize = 20;
+    var GRIDSize = 10;
     function rectcontains(ax,ay,awidth,aheight,bx,by,bwidth,bheight){
         var nMaxLeft = ax >= bx ? ax : bx;  
         var nMaxTop = ay >= by ? ay : by;  
@@ -17,9 +17,9 @@ define(['pathfinding-browser','canvas'],function(PF,canvas){
         
         var xLength = Math.ceil(canvas.width/GRIDSize);
         var yLength = Math.ceil(canvas.height/GRIDSize); 
-        map = new Array(xLength);
-        for(var i=0;i<xLength;i++){
-            var temp = new Array(yLength);
+        map = new Array(yLength);
+        for(var i=0;i<yLength;i++){
+            var temp = new Array(xLength);
             temp.fill(0);
             map[i] = temp; 
         }
@@ -28,12 +28,13 @@ define(['pathfinding-browser','canvas'],function(PF,canvas){
             for(var j=0;j<yLength;j++){
                 for(var k in brickArr){
                     var temp = parseInt(rectcontains(brickArr[k].x,brickArr[k].y,brickArr[k].width,brickArr[k].height,i*GRIDSize,j*GRIDSize,GRIDSize,GRIDSize));
-                    map[j][i] = temp;
+                    map[j][i] = map[j][i]|temp;
                 }   
             }
         }
         return map;
     }
+    
     function findPathwarpper(startX,startY,endX,endY){
         var x = map.length;
         var y = map[0].length;

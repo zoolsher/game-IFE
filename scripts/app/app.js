@@ -65,7 +65,7 @@ define(['canvas','brick','player','pathfindWrapper'],function(canvas,brick,playe
     }
     
     canvas.click = function(x,y){
-        pf.initMap(brickArr);
+        var map = pf.initMap(brickArr);
         path = pf.fp(player.x,player.y,x,y);
         requestAnimationFrame(gogo);
     }
