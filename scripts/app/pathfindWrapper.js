@@ -14,7 +14,6 @@ define(['pathfinding-browser','canvas'],function(PF,canvas){
     }
     
     function initMap(brickArr){
-        
         var xLength = Math.ceil(canvas.width/GRIDSize);
         var yLength = Math.ceil(canvas.height/GRIDSize); 
         map = new Array(yLength);
@@ -53,7 +52,7 @@ define(['pathfinding-browser','canvas'],function(PF,canvas){
          * 0 width 1 height
          *  */  
         var res = [];
-        for(var i in path){
+        for(var i=0;i<path.length;i++){
             res.push([path[i][0]*GRIDSize,path[i][1]*GRIDSize]);
         }
         return res;

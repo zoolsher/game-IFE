@@ -1,4 +1,4 @@
-define(['canvas','brick','player','pathfindWrapper'],function(canvas,brick,player,pf) {
+define(['canvas','brick','player','pathfindWrapper','job'],function(canvas,brick,player,pf,job) {
     console.log(pf);
     'use strict';
     var width = canvas.width;
@@ -21,6 +21,11 @@ define(['canvas','brick','player','pathfindWrapper'],function(canvas,brick,playe
     
     var player = new player();
     canvas.addSon(player);
+    
+    var job = new job();
+    job.x = width-100;
+    job.y = height-100;
+    canvas.addSon(job);
     
     function dotInRect(dotX,dotY,x,y,width,height){
         if(dotX>x&&dotX<x+width&&dotY>y&&dotY<y+height){
@@ -79,6 +84,9 @@ define(['canvas','brick','player','pathfindWrapper'],function(canvas,brick,playe
     
     function step(){
         canvas.draw();
+        if(Math.abs(player.x-job.x+player.y+job.y)<10){
+            canvas.removeSon(job);
+        }
         requestAnimationFrame(step);
     }
     
